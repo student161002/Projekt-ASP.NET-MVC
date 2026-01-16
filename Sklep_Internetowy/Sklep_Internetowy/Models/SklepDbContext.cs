@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Sklep_Internetowy.Models;
 
-public partial class SklepDbContext : DbContext
+public partial class SklepDbContext : IdentityDbContext
 {
     public SklepDbContext()
     {
@@ -26,7 +27,8 @@ public partial class SklepDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Kategorie>(entity =>
+		base.OnModelCreating(modelBuilder);
+		modelBuilder.Entity<Kategorie>(entity =>
         {
             entity.HasKey(e => e.KategoriaId).HasName("PK__Kategori__37D210ECA5AB7EC6");
 
