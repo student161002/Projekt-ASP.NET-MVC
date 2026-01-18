@@ -43,6 +43,7 @@
                 @Html.DisplayFor(modelItem => item.Kategoria.KategoriaId)
             </td>
             <td>
+                <a asp-controller="Zamowienia" asp-action="Create" asp-route-produktId="@item.ProduktId" class="btn btn-success btn-sm">Kup teraz</a>
                 <a asp-action="Edit" asp-route-id="@item.ProduktId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.ProduktId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.ProduktId">Delete</a>

@@ -1,0 +1,42 @@
+﻿@model Sklep_Internetowy.Models.Zamowienium
+
+@{
+    ViewData["Title"] = "Finalizacja zakupu";
+}
+
+<h1>Kupujesz: @ViewBag.ProduktNazwa</h1>
+<h3>Cena: @ViewBag.ProduktCena PLN</h3>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" name="ProduktId" value="@ViewBag.ProduktId" />
+
+            <div class="form-group mb-3">
+                <label asp-for="ImieNazwiskoKlienta" class="control-label">Imię i Nazwisko</label>
+                <input asp-for="ImieNazwiskoKlienta" class="form-control" placeholder="np. Jan Kowalski" />
+                <span asp-validation-for="ImieNazwiskoKlienta" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="AdresWysylki" class="control-label">Adres dostawy (dla kuriera)</label>
+                <input asp-for="AdresWysylki" class="form-control" placeholder="Ulica, Miasto..." />
+                <span asp-validation-for="AdresWysylki" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Potwierdzam zakup i płacę" class="btn btn-success" />
+                <a asp-controller="Produkty" asp-action="Index" class="btn btn-secondary">Anuluj</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

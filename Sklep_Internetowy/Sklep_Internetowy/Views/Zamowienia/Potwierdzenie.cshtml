@@ -1,0 +1,12 @@
+﻿@model int
+@{
+    ViewData["Title"] = "Dziękujemy";
+}
+
+<div class="text-center mt-5">
+    <h1 class="display-4 text-success">Dziękujemy za zakupy!</h1>
+    <p class="lead">Twoje zamówienie nr <strong>#@Model</strong> zostało przyjęte do realizacji.</p>
+    <hr />
+    <p>Możesz teraz wrócić do przeglądania oferty.</p>
+    <a asp-controller="Produkty" asp-action="Index" class="btn btn-primary btn-lg">Wróć do Antykwariatu</a>
+</div>
