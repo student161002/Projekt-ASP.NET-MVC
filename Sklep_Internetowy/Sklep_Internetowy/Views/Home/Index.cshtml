@@ -1,8 +1,41 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Strona Główna";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-3 mb-4">Antykwariat Retro</h1>
+    <p class="lead mb-5">Odkryj duszę w przedmiotach z przeszłości. Meble, oświetlenie i unikalne dodatki.</p>
+
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card border-primary mb-3">
+                <div class="card-header">Oferta</div>
+                <div class="card-body">
+                    <h4 class="card-title">Unikalne Meble</h4>
+                    <p class="card-text">Przeglądaj naszą kolekcję odrestaurowanych mebli z epoki.</p>
+                    <a asp-controller="Produkty" asp-action="Index" class="btn btn-primary">Zobacz Produkty</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-secondary mb-3">
+                <div class="card-header">O Nas</div>
+                <div class="card-body">
+                    <h4 class="card-title">Historia</h4>
+                    <p class="card-text">Działamy od 1995 roku, przywracając blask zapomnianym przedmiotom.</p>
+                    <a asp-controller="Home" asp-action="Privacy" class="btn btn-secondary">Więcej</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-success mb-3">
+                <div class="card-header">Konto</div>
+                <div class="card-body">
+                    <h4 class="card-title">Logowanie</h4>
+                    <p class="card-text">Zaloguj się, aby dokonać zakupu.</p>
+                    <a href="/Identity/Account/Login" class="btn btn-success">Zaloguj się</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

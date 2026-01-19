@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Sklep_Internetowy.Models.Produkty>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Produkty";
 }
 
-<h1>Index</h1>
+<h1>Nasze produkty</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -40,13 +40,21 @@
                 @Html.DisplayFor(modelItem => item.Opis)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Kategoria.KategoriaId)
+                @Html.DisplayFor(modelItem => item.Kategoria.Nazwa)
             </td>
             <td>
                 <a asp-controller="Zamowienia" asp-action="Create" asp-route-produktId="@item.ProduktId" class="btn btn-success btn-sm">Kup teraz</a>
-                <a asp-action="Edit" asp-route-id="@item.ProduktId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ProduktId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ProduktId">Delete</a>
+                <a asp-action="Details" asp-route-id="@item.ProduktId" class="btn btn-info btn-sm">Details</a>
+                <span>|</span>
+                <a asp-action="Edit" asp-route-id="@item.ProduktId">Edit</a>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    
+
+                    <span>|</span>
+                    <a asp-action="Delete" asp-route-id="@item.ProduktId" class="text-danger">Delete</a>
+                }
             </td>
         </tr>
 }

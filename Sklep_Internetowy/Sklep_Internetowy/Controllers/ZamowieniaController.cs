@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -44,6 +45,7 @@ namespace Sklep_Internetowy.Controllers
 
 		// GET: Zamowienia/Create
 		// GET: Zamowienia/Create?produktId=5
+		[Authorize]
 		public IActionResult Create(int? produktId)
 		{
 			if (produktId == null)
@@ -76,6 +78,7 @@ namespace Sklep_Internetowy.Controllers
 		// POST: Zamowienia/Create
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[Authorize]
 		public async Task<IActionResult> Create(int ProduktId, [Bind("ZamowienieId,DataZamowienia,AdresWysylki,ImieNazwiskoKlienta")] Zamowienium zamowienie)
 		{
 			zamowienie.DataZamowienia = DateTime.Now;

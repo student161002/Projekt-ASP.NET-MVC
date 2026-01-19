@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,8 @@ using Sklep_Internetowy.Models;
 
 namespace Sklep_Internetowy.Controllers
 {
-    public class ProduktyController : Controller
+	
+	public class ProduktyController : Controller
     {
         private readonly SklepDbContext _context;
 
@@ -18,15 +20,21 @@ namespace Sklep_Internetowy.Controllers
             _context = context;
         }
 
-        // GET: Produkty
-        public async Task<IActionResult> Index()
-        {
-            var sklepDbContext = _context.Produkties.Include(p => p.Kategoria);
-            return View(await sklepDbContext.ToListAsync());
-        }
+		// GET: Produkty
+		public async Task<IActionResult> Index(int? kategoriaId)
+		{
+			var produktyQuery = _context.Produkties.Include(p => p.Kategoria).AsQueryable();
 
-        // GET: Produkty/Details/5
-        public async Task<IActionResult> Details(int? id)
+			if (kategoriaId != null)
+			{
+				produktyQuery = produktyQuery.Where(p => p.KategoriaId == kategoriaId);
+			}
+
+			return View(await produktyQuery.ToListAsync());
+		}
+
+		// GET: Produkty/Details/5
+		public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -44,10 +52,11 @@ namespace Sklep_Internetowy.Controllers
             return View(produkty);
         }
 
-        // GET: Produkty/Create
-        public IActionResult Create()
+		// GET: Produkty/Create
+		[Authorize(Roles = "Admin")]
+		public IActionResult Create()
         {
-            ViewData["KategoriaId"] = new SelectList(_context.Kategories, "KategoriaId", "KategoriaId");
+            ViewData["KategoriaId"] = new SelectList(_context.Kategories, "KategoriaId", "Nazwa");
             return View();
         }
 
@@ -56,20 +65,23 @@ namespace Sklep_Internetowy.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProduktId,Nazwa,Cena,Opis,KategoriaId")] Produkty produkty)
+        public async Task<IActionResult> Create(Produkty produkty)
         {
-            if (ModelState.IsValid)
+			ModelState.Remove("Kategoria");
+
+			if (ModelState.IsValid)
             {
                 _context.Add(produkty);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["KategoriaId"] = new SelectList(_context.Kategories, "KategoriaId", "KategoriaId", produkty.KategoriaId);
-            return View(produkty);
+			ViewData["KategoriaId"] = new SelectList(_context.Kategories, "KategoriaId", "Nazwa", produkty.KategoriaId);
+			return View(produkty);
         }
 
-        // GET: Produkty/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+		// GET: Produkty/Edit/5
+		[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -81,7 +93,7 @@ namespace Sklep_Internetowy.Controllers
             {
                 return NotFound();
             }
-            ViewData["KategoriaId"] = new SelectList(_context.Kategories, "KategoriaId", "KategoriaId", produkty.KategoriaId);
+            ViewData["KategoriaId"] = new SelectList(_context.Kategories, "KategoriaId", "Nazwa", produkty.KategoriaId);
             return View(produkty);
         }
 
@@ -90,9 +102,11 @@ namespace Sklep_Internetowy.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProduktId,Nazwa,Cena,Opis,KategoriaId")] Produkty produkty)
+        public async Task<IActionResult> Edit(int id, Produkty produkty)
         {
-            if (id != produkty.ProduktId)
+			ModelState.Remove("Kategoria");
+
+			if (id != produkty.ProduktId)
             {
                 return NotFound();
             }
@@ -121,8 +135,9 @@ namespace Sklep_Internetowy.Controllers
             return View(produkty);
         }
 
-        // GET: Produkty/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+		// GET: Produkty/Delete/5
+		[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
